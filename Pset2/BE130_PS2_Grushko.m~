@@ -18,5 +18,161 @@ thetapref = 2*pi*rand(1, size);
 
 
 for i = 1 : length(r100)
-    r100(i) = k1 * cos(thetapref(i) - theta)+ k0;
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
 end
+
+PV = zeros(2, 100);
+
+for i = 1 : size
+    PV(1, i) = r100(i)*cos(thetapref(i));
+    PV(2, i) = r100(i)*sin(thetapref(i));
+end
+
+figure;
+plotv(PV);
+
+% 100 evenly spaced
+
+size = 100;
+r100 = zeros(1, size);
+thetapref = 2*pi*linspace(0, 1, size);
+
+
+for i = 1 : length(r100)
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
+end
+
+PV = zeros(2, 100);
+
+for i = 1 : size
+    PV(1, i) = r100(i)*cos(thetapref(i));
+    PV(2, i) = r100(i)*sin(thetapref(i));
+end
+
+figure;
+plotv(PV);
+
+%% PV prediction accuracy test
+
+% N = 10
+
+size = 10;
+r100 = zeros(1, size);
+thetapref = 2*pi*rand(1, size);
+
+
+for i = 1 : length(r100)
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
+end
+
+PV10 = zeros(2, size);
+
+for i = 1 : size
+    PV10(1, i) = r100(i)*cos(thetapref(i));
+    PV10(2, i) = r100(i)*sin(thetapref(i));
+end
+
+% N = 100
+
+size = 100;
+r100 = zeros(1, size);
+thetapref = 2*pi*rand(1, size);
+
+
+for i = 1 : length(r100)
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
+end
+
+PV100 = zeros(2, size);
+
+for i = 1 : size
+    PV100(1, i) = r100(i)*cos(thetapref(i));
+    PV100(2, i) = r100(i)*sin(thetapref(i));
+end
+
+% N = 1000
+size = 1000;
+r100 = zeros(1, size);
+thetapref = 2*pi*rand(1, size);
+
+
+for i = 1 : length(r100)
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
+end
+
+PV1000 = zeros(2, size);
+
+for i = 1 : size
+    PV1000(1, i) = r100(i)*cos(thetapref(i));
+    PV1000(2, i) = r100(i)*sin(thetapref(i));
+end
+
+% N = 10000
+size = 10000;
+r100 = zeros(1, size);
+thetapref = 2*pi*rand(1, size);
+
+
+for i = 1 : length(r100)
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
+end
+
+PV10000 = zeros(2, size);
+
+for i = 1 : size
+    PV10000(1, i) = r100(i)*cos(thetapref(i));
+    PV10000(2, i) = r100(i)*sin(thetapref(i));
+end
+
+% N = 100000
+size = 100000;
+r100 = zeros(1, size);
+thetapref = 2*pi*rand(1, size);
+
+
+for i = 1 : length(r100)
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
+end
+
+PV100000 = zeros(2, size);
+
+for i = 1 : size
+    PV100000(1, i) = r100(i)*cos(thetapref(i));
+    PV100000(2, i) = r100(i)*sin(thetapref(i));
+end
+
+% N = 1000000
+size = 100000;
+r100 = zeros(1, size);
+thetapref = 2*pi*rand(1, size);
+
+
+for i = 1 : length(r100)
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
+end
+
+PV1000000 = zeros(2, size);
+
+for i = 1 : size
+    PV1000000(1, i) = r100(i)*cos(thetapref(i));
+    PV1000000(2, i) = r100(i)*sin(thetapref(i));
+end
+
+diff10 = asin(PV10(1)) - theta;
+diff100 = asin(PV100(1)) - theta;
+diff1000 = asin(PV1000(1)) - theta;
+diff10000 = asin(PV10000(1)) - theta;
+diff100000 = asin(PV100000(1)) - theta;
+diff1000000 = asin(PV1000000(1)) - theta;
+RMS10 = sqrt(mean((diff10).^2));
+RMS100 = sqrt(mean((diff100).^2));
+RMS1000 = sqrt(mean((diff1000).^2));
+RMS10000 = sqrt(mean((diff10000).^2));
+RMS100000 = sqrt(mean((diff100000).^2));
+RMS1000000 = sqrt(mean((diff1000000).^2));
+
+RMS = [RMS10, RMS100, RMS1000, RMS10000, RMS100000, RMS1000000];
+Ns = [10, 100, 1000, 10000, 100000, 1000000];
+plot(Ns, RMS)
+
+%RMSE = sqrt(mean((PV - theta).^2));
