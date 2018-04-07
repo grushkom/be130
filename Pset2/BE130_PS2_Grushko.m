@@ -29,7 +29,7 @@ for i = 1 : size
 end
 
 figure;
-plotv(PV);
+plotv(PV); title("Randomly Spaced Angles")
 
 % 100 evenly spaced
 
@@ -50,7 +50,7 @@ for i = 1 : size
 end
 
 figure;
-plotv(PV);
+plotv(PV); title('Evenly Spaced Angles')
 
 %% PV prediction accuracy test
 
@@ -165,13 +165,44 @@ diff10000 = thetapref10000 - theta;
 diff100000 = thetapref100000 - theta;
 diff1000000 = thetapref1000000 - theta;
 RMS10 = (sqrt(mean((diff10).^2)));
-RMS100 = (sqrt(mean((diff100).^2))) - 1;
-RMS1000 = (sqrt(mean((diff1000).^2))) - 1.3;
-RMS10000 = (sqrt(mean((diff10000).^2))) - 1.35;
-RMS100000 = (sqrt(mean((diff100000).^2))) - 1.4;
-RMS1000000 = (sqrt(mean((diff1000000).^2))) - 1.5;
+RMS100 = (sqrt(mean((diff100).^2)));
+RMS1000 = (sqrt(mean((diff1000).^2)));
+RMS10000 = (sqrt(mean((diff10000).^2)));
+RMS100000 = (sqrt(mean((diff100000).^2)));
+RMS1000000 = (sqrt(mean((diff1000000).^2)));
 
 RMS = [RMS10, RMS100, RMS1000, RMS10000, RMS100000, RMS1000000];
 Ns = [10, 100, 1000, 10000, 100000, 1000000];
+figure;
 semilogx(Ns, RMS); title("RMS error"); xlabel("N"); ylabel("RMS")
 
+%% Bonus
+
+% The RMS decreases with the larger sample size, due to the law of large numbers in statistics. In order to even further
+% decrease RMS, one could completely cut off angles that are a certain
+% distance away from the desired theta. Look below for the graph of the new
+% weighting system. Also, the calculation below 
+
+% 100 randomly spaced
+size = 100;
+r100 = zeros(1, size);
+theta = theta;
+thetapref = theta + 0.2*pi*(rand(1, size) - 0.5);
+
+
+for i = 1 : length(r100)
+    r100(i) = k1 * cos(thetapref(i) - theta) + k0;
+end
+
+PV = zeros(2, 100);
+
+for i = 1 : size
+    PV(1, i) = r100(i)*cos(thetapref(i));
+    PV(2, i) = r100(i)*sin(thetapref(i));
+end
+
+figure;
+plotv(PV); title("Randomly Spaced Restricted Angles to theta +- 0.1Pi ")
+
+diff = thetapref - theta;
+RMS = (sqrt(mean((diff10).^2)))
