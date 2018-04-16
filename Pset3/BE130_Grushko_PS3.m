@@ -136,11 +136,18 @@ for i = 1:1e6;
         plot(x); title([i, alpha]); drawnow; 
     end
 end
+
 disp("Learning Finished")
+
 %% Problem 5
 
 % Minimal Square Jerk
 N = 1000;
+xi = 0;
+xf = 1;
+dx = xf/N;
+y = linspace(0, 1, N);
+dy = diff(y);
 obj = @(x,xf) diff([0,0,0,x,xf,xf,xf],4);
 x = lsqnonlin(@(x) obj(x, 0), x0);
 y = lsqnonlin(@(x) obj(x, 0), x0);

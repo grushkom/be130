@@ -118,7 +118,7 @@ subplot(313); plot(t(2:end-1),diff(x_,2)/dt^2); ylabel("Acceleration");xlabel("T
 
 N = 50;
 delta = 1e-8;
-x = zeros(1, N);
+x = rand(1, N);
 j = @(x,xf) diff([0,0,0,x,xf,xf,xf],3);
 gr = 0*x;
 
@@ -130,26 +130,21 @@ for i = 1:1e6;
         gr(k) = sum((j((x + a), 10).^2 - j(x, 10).^2))./delta;
     end
     dgr = gr - prev_gr;
-    alpha = dot(gr, gr)/dot(dgr, gr);
-    x = x - 0.03*alpha.*gr;
-    if rem(i,100) == 1
+    alpha = abs(dot(gr, gr)/dot(dgr, gr));
+    x = x - 0.01*alpha.*gr;
+    if rem(i,1000) == 1
         plot(x); title([i, alpha]); drawnow; 
     end
 end
-disp("Learning Finished end")
-% Tf=0.5; t=[0:(N+1)]/(N+1)*Tf; dt=Tf/(N+1);
-% subplot(311); plot(t,x); ylabel("Position"); title("Minimal Square Acceleration"); hold on;
-% subplot(312); plot(t(2:end),diff(x)/dt); ylabel("Velocity");hold on;
-% subplot(313); plot(t(2:end-1),diff(x,2)/dt^2); ylabel("Acceleration");xlabel("Time(sec)");hold on;
 
+disp("Learning Finished")
 
 %% Problem 5
 
 % Minimal Square Jerk
 N = 1000;
-y0 = ones(1, N);
-x0 = ones(1, N);
-obj = @(x,xf) trapz(sqrt(diff((x).^2 + 1)./sqrt(-2*10.*x)));
+
+obj = @(x,xf) diff([0,0,0,x,xf,xf,xf],4);
 x = lsqnonlin(@(x) obj(x, 0), x0);
 y = lsqnonlin(@(x) obj(x, 0), x0);
 x_= [10,x,0];
