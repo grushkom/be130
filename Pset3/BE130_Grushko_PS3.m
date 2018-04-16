@@ -114,8 +114,6 @@ subplot(313); plot(t(2:end-1),diff(x_,2)/dt^2); ylabel("Acceleration");xlabel("T
 
 %% Problem 4b
 
-% I was too lazy to make a separate function file
-
 N = 50;
 delta = 1e-8;
 x = rand(1, N);
@@ -141,18 +139,16 @@ disp("Learning Finished")
 
 %% Problem 5
 
-% Minimal Square Jerk
-N = 1000;
-xi = 0;
-xf = 1;
-dx = xf/N;
-y = linspace(0, 1, N);
-dy = diff(y);
-obj = @(x,xf) diff([0,0,0,x,xf,xf,xf],4);
-x = lsqnonlin(@(x) obj(x, 0), x0);
-y = lsqnonlin(@(x) obj(x, 0), x0);
+N= 1000;
+y = linspace(0, -1, N);
+yi = 0;
+yf = -1;
+
+
+y = lsqnonlin(@(y, yi, yf, dx) t(y, ), x0);
 x_= [10,x,0];
 Tf=0.5; t=[0:(N+1)]/(N+1)*Tf; dt=Tf/(N+1);
+
 figure; 
 subplot(311); plot(t,x_); ylabel("Position"); title("Minimal Square Jerk"); hold on;
 subplot(312); plot(t(2:end),diff(x_)/dt); ylabel("Velocity");hold on;
