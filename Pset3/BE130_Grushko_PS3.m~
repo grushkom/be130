@@ -8,20 +8,23 @@ clear vars;
 
 %% Problem 1b
 
-Tf = 0.5;
-t = 0:0.001:Tf;
-
-x = 1920*t.^5 - 2400*t.^4 + 800*t.^3;
-v = 9600*t.^4 - 9600*t.^3 + 2400*t.^2;
-a = 38400*t.^3 - 28800*t.^2 + 4800*t.^1;
+Tf1 = 0.25;
+t1 = 0:0.001:Tf1;
+Tf2 = 5
+t1 = 0:0.001:Tf1;
+x = -1280*t1.^3 + 480*t1.^2;
+v = -3840*t1.^2 - 960*t1.^1;
+a = -7680*t1.^3 - 960*t1.^0;
 
 figure;
 subplot(3,1,1); 
-plot(t,x); title("Position"); xlabel("time")
+plot(t1,x); title("Position"); xlabel("time")
+hold on;
+plot
 subplot(3,1,2); 
-plot(t,v); title("Velocity"); xlabel("time")
+plot(t1,v); title("Velocity"); xlabel("time")
 subplot(3,1,3); 
-plot(t,a); title("Acceleration"); xlabel("time")
+plot(t1,a); title("Acceleration"); xlabel("time")
 
 %% Problem 1d
 
@@ -140,13 +143,19 @@ disp("Learning Finished")
 %% Problem 5
 
 N= 1000;
-y = linspace(0, -1, N);
+y = rand(1, N);
+yi = 0;
+yf = -1;
+dx = 1/1000;
 
-y = lsqnonlin(@(x) dt, x0);
-x_= [10,x,0];
-Tf=0.5; t=[0:(N+1)]/(N+1)*Tf; dt=Tf/(N+1);
+y = lsqnonlin(@(t) t_ramp(y, yi, yf, dx), yf);
+y_= [yi,y,yf];
 
 figure; 
-subplot(311); plot(t,x_); ylabel("Position"); title("Minimal Square Jerk"); hold on;
-subplot(312); plot(t(2:end),diff(x_)/dt); ylabel("Velocity");hold on;
-subplot(313); plot(t(2:end-1),diff(x_,2)/dt^2); ylabel("Acceleration");xlabel("Time(sec)");hold on;
+subplot(311); plot(y_); ylabel("Position"); title("Minimal Square Jerk"); hold on;
+subplot(312); plot(diff(y_)/dt); ylabel("Velocity");hold on;
+subplot(313); plot(diff(y_,2)/dt^2); ylabel("Acceleration");xlabel("Time(sec)");hold on;
+
+%%
+
+t_ramp(y, yi, yf, dx);
